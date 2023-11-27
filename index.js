@@ -1,6 +1,8 @@
 const express =  require('express');
 
 const app = express();
+const os  = require('os');
+const cluster = require('cluster');
 
 
 //function which is responsible for causing the delay 
@@ -19,9 +21,7 @@ app.get('/',(request,response)=>{
 
 app.get('/timer',(request,response)=>{
     delay(9000);
-    response.json({
-        Message : 'Ding Ding Ding!!'
-    })
+    response.send(`Ping Pong Ping Pong!! ${process.pid}`);
 
 })
 
@@ -30,4 +30,20 @@ app.get('/timer',(request,response)=>{
 //this is how delay can occur in event loops
 
 
-app.listen(3001);
+//so we will make two worker threads out of our main node process
+console.log('Running our Node Server!!')
+if(cluster.isMaster){
+    console.log('Master Process Started');
+
+    const NUM_WORKERS = os.cpus().length;
+    console.log('number of worker threads created are',NUM_WORKERS);
+    for(let i = 0;i<NUM_WORKERS;i++){
+        cluster.fork();
+    }
+}else{
+    console.log('Worker Process Started');
+    app.listen(3001);
+}
+
+
+ 
