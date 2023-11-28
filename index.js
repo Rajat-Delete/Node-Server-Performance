@@ -20,8 +20,8 @@ app.get('/',(request,response)=>{
 })
 
 app.get('/timer',(request,response)=>{
-    delay(9000);
-    response.send(`Ping Pong Ping Pong!! ${process.pid}`);
+    delay(2000);
+    response.send(`Beep Beep Beep!! ${process.pid}`);
 
 })
 
