@@ -1,8 +1,8 @@
 const express =  require('express');
 
 const app = express();
-const os  = require('os');
-const cluster = require('cluster');
+// const os  = require('os');
+// const cluster = require('cluster');
 
 
 //function which is responsible for causing the delay 
@@ -32,18 +32,23 @@ app.get('/timer',(request,response)=>{
 
 //so we will make two worker threads out of our main node process
 console.log('Running our Node Server!!')
-if(cluster.isMaster){
-    console.log('Master Process Started');
 
-    const NUM_WORKERS = os.cpus().length;
-    console.log('number of worker threads created are',NUM_WORKERS);
-    for(let i = 0;i<NUM_WORKERS;i++){
-        cluster.fork();
-    }
-}else{
-    console.log('Worker Process Started');
+
+/*
+Commenting since now there is no need to clustering manually, we can do it by pm2
+*/
+// if(cluster.isMaster){
+//     console.log('Master Process Started');
+
+//     const NUM_WORKERS = os.cpus().length;
+//     console.log('number of worker threads created are',NUM_WORKERS);
+//     for(let i = 0;i<NUM_WORKERS;i++){
+//         cluster.fork();
+//     }
+// }else{
+//     console.log('Worker Process Started');
     app.listen(3001);
-}
+//}
 
 
  
